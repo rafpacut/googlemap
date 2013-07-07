@@ -98,23 +98,30 @@ if( isset( $_GET['source_id'] ) )
 	
 	$path = array();
 	$trace = $target;
-
-	$path[0] = array();
-	$path[0][0] = $trace->lat;
-	$path[0][1] = $trace->lng;
-
-	while( $trace->parent != null )
+	if( $trace->parent != null )
 	{
-		$trace = $trace->parent;
-		$arr = array();
-		array_push( $path, $arr );
-		$el_number = count( $path ) - 1;
-		$path[ $el_number ][0] = $trace->lat;
-		$path[ $el_number ][1] = $trace->lng;
-	}
 
-	$obj = json_encode( $path );
-	echo $obj;
+		$path[0] = array();
+		$path[0][0] = $trace->lat;
+		$path[0][1] = $trace->lng;
+
+		while( $trace->parent != null )
+		{
+			$trace = $trace->parent;
+			$arr = array();
+			array_push( $path, $arr );
+			$el_number = count( $path ) - 1;
+			$path[ $el_number ][0] = $trace->lat;
+			$path[ $el_number ][1] = $trace->lng;
+		}
+
+		$obj = json_encode( $path );
+		echo $obj;
+	}
+	else
+	{
+		echo json_encode('not found');
+	}
 }
 
 

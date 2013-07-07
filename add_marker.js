@@ -45,7 +45,7 @@ function add_marker( location, marker_id )
 	//marker specific event listener allowing deletion:
 	google.maps.event.addListener( marker, 'click', function()
 	{
-		$.getJSON("/googlemap/marker_handle.php", { 'id': marker_id });
+		$.getJSON("./marker_handle.php", { 'id': marker_id });
 		marker.setMap( null );
 	});
 
@@ -53,7 +53,7 @@ function add_marker( location, marker_id )
 	//send marker position to database via php:
 	//w tej chwili unikalnosc markerow jest zachowana dzieki odrzucaniu duplikatow przez baze danych,
 	//nie lepiej byloby sprawdzic ja iterujac po tablicy markerow?
-	$.getJSON("/googlemap/marker_handle.php", { 'marker_id': marker_id ,'lat': location.lat() , 'lng': location.lng() });
+	$.getJSON("./marker_handle.php", { 'marker_id': marker_id ,'lat': location.lat() , 'lng': location.lng() });
 
 	google.maps.event.addListener( marker, 'rightclick', function()
 	{
@@ -61,12 +61,16 @@ function add_marker( location, marker_id )
         	{
 			graph_constructing = false;
 
-			$.getJSON("/googlemap/shortest_paths/graph_init.php",{ 'source_id': source[0], 'source_lat': source[1], 
+			$.getJSON("./shortest_paths/graph_init.php",{ 'source_id': source[0], 'source_lat': source[1], 
 			       'source_lng': source[2], 'dest_id': marker_id, 'dest_lat': location.lat(), 'dest_lng': location.lng() }, 
 		       		function( data ) 
 				{
-					draw_polyline( data);
-				});
+					if( data != 'not found' )	
+						draw_polyline( data);
+					else
+						alert( 'nie znaleziono sciezki.');
+				})
+
 		}
 		else
 		{
@@ -97,7 +101,7 @@ function initialize()
       mapOptions);
 
   //re-create all the markers previously set from the database:
-	$.getJSON( '/googlemap/marker_handle.php', function( data )
+	$.getJSON( './marker_handle.php', function( data )
   	{
 		$.each( data, function( key, val )
 		{
@@ -116,7 +120,6 @@ google.maps.event.addListener( map, 'click', function( event )
 });
 
 
-var distanceWidget = new DistanceWidget( map );
 
 
 }

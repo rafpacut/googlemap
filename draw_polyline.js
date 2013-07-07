@@ -9,7 +9,7 @@ function draw_polyline( data )
 			path.push( position );
 		}
 	});
-	
+
 	var polyline = new google.maps.Polyline(
 	{
 		path: path,
