@@ -11,7 +11,6 @@ function find_minimal( $Q )
 	{
 		if( $minimal->distance > $vert->distance )
 		{
-			$minimal = $vert;
 			$min_key = $key;
 		}
 	}
@@ -37,7 +36,6 @@ function dijkstra( $graph, $source, $target )
 				$edge->ngb->parent = $actual_vert;
 				array_unshift( $Q, $edge->ngb );
 			}
-			$Q = array_values( $Q ) ;
 		}
 	}
 }
