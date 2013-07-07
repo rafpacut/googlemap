@@ -1,7 +1,5 @@
 var map;
 var markersArray = [];
-// if there is no markers in database, the first marker will have no id, 
-// and by clicking on the map the markersArray[0] would be NaN
 markersArray[0] = -1; 
 var graph_constructing = false;
 var source = [];
@@ -42,7 +40,6 @@ function add_marker( location, marker_id )
 
 
 
-	//marker specific event listener allowing deletion:
 	google.maps.event.addListener( marker, 'click', function()
 	{
 		$.getJSON("./marker_handle.php", { 'id': marker_id });
@@ -50,9 +47,6 @@ function add_marker( location, marker_id )
 	});
 
 
-	//send marker position to database via php:
-	//w tej chwili unikalnosc markerow jest zachowana dzieki odrzucaniu duplikatow przez baze danych,
-	//nie lepiej byloby sprawdzic ja iterujac po tablicy markerow?
 	$.getJSON("./marker_handle.php", { 'marker_id': marker_id ,'lat': location.lat() , 'lng': location.lng() });
 
 	google.maps.event.addListener( marker, 'rightclick', function()
@@ -100,7 +94,6 @@ function initialize()
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  //re-create all the markers previously set from the database:
 	$.getJSON( './marker_handle.php', function( data )
   	{
 		$.each( data, function( key, val )
@@ -112,7 +105,6 @@ function initialize()
 		
 	});
 
-//create a marker after clicking on map:
 google.maps.event.addListener( map, 'click', function( event )
 {
 	marker_id = markersArray[markersArray.length - 1] + 1;

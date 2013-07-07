@@ -21,6 +21,7 @@ class edge
 /*
 Calculates the great-circle distance between two points, with
   the Haversine formula.
+  [m]
   */
 function haversineDistance( $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo )
 {
